@@ -2,6 +2,8 @@
 
 #include "ImGuizmo.h"
 
+// #define ENABLE_CUSTOMDRAW
+
 enum ImSequencerOptions_t
 {
     IMSEQUENCER_EDIT_NONE = 0,
@@ -33,8 +35,11 @@ typedef void (*ImSequencer_PasteCallback)(void* context, size_t contextSizeBytes
 
 typedef size_t (*ImSequencer_GetCustomHeightCallback)(void* context, size_t contextSizeBytes, int index);
 typedef void (*ImSequencer_DoubleClickCallback)(void* context, size_t contextSizeBytes, int index);
-typedef void (*ImSequencer_CustomDrawCallback)(void* context, size_t contextSizeBytes, int index, ImDrawList* draw_list, ImRect rc, ImRect legendRect, ImRect clippingRect, ImRect legendClippingRect);
-typedef void (*ImSequencer_CustomDrawCompactCallback)(void* context, size_t contextSizeBytes, int index, ImDrawList* draw_list, ImRect rc, ImRect clippingRect);
+
+#ifdef ENABLE_CUSTOMDRAW
+    typedef void (*ImSequencer_CustomDrawCallback)(void* context, size_t contextSizeBytes, int index, void* draw_list, ImRect rc, ImRect legendRect, ImRect clippingRect, ImRect legendClippingRect);
+    typedef void (*ImSequencer_CustomDrawCompactCallback)(void* context, size_t contextSizeBytes, int index, void* draw_list, ImRect rc, ImRect clippingRect);
+#endif
 
 struct ImSequencerParams_t
 {
@@ -64,8 +69,10 @@ struct ImSequencerParams_t
     ImSequencer_GetCustomHeightCallback getCustomHeight;
     ImSequencer_DoubleClickCallback doubleClick;
     
-    ImSequencer_CustomDrawCallback customDraw;
-    ImSequencer_CustomDrawCompactCallback customDrawCompact;
+    #ifdef ENABLE_CUSTOMDRAW
+        // ImSequencer_CustomDrawCallback customDraw;
+        // ImSequencer_CustomDrawCompactCallback customDrawCompact;
+    #endif
 };
 
 typedef struct ImSequencerParams_t ImSequencerParams;
@@ -73,6 +80,6 @@ typedef struct ImSequencerParams_t ImSequencerParams;
 struct ImSequencerHandle_t;
 typedef struct ImSequencerHandle_t* ImSequencerHandle;
 
-bool ImSequencer_createSequencer(ImSequencerParams params, ImSequencerHandle* sequencer);
-bool ImSequencer_destroySequencer(ImSequencerHandle sequencer);
-bool ImSequencer_draw(ImSequencerHandle sequencer, int* currentFrame, bool* expanded, int* selectedEntry, int* firstFrame, ImSequencerOptions sequencerOptions);
+EXPORT_API bool ImSequencer_createSequencer(ImSequencerParams params, ImSequencerHandle* sequencer);
+EXPORT_API bool ImSequencer_destroySequencer(ImSequencerHandle sequencer);
+EXPORT_API bool ImSequencer_draw(ImSequencerHandle sequencer, int* currentFrame, bool* expanded, int* selectedEntry, int* firstFrame, ImSequencerOptions sequencerOptions);

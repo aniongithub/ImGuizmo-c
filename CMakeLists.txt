@@ -2,14 +2,21 @@ cmake_minimum_required(VERSION 3.13)
 
 project(ImGuizmoC VERSION 0.1)
 
+option(BUILD_SHARED_LIBS "Build shared libs" ON)
+
 find_package(imgui REQUIRED COMPONENTS imgui-core)
-find_package(imguizmo REQUIRED)
+
+add_subdirectory(ImGuizmo)
 
 list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_SOURCE_DIR}/cmake)
 
-option(BUILD_SHARED_LIBS "Build shared libs" ON)
-
 add_library(${PROJECT_NAME} libMain.cpp)
+
+# Generate ctypes bindings
+include(${CMAKE_SOURCE_DIR}/cpython-interop/ctypes_bindings.cmake)
+ctypes_bindings(${PROJECT_NAME} 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/ImGuizmoC/ImSequencer.h
+    ${CMAKE_CURRENT_BINARY_DIR}/ImSequencer.py)
 
 # Includes
 target_include_directories(${PROJECT_NAME}

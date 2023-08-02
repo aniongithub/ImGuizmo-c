@@ -5,6 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Debug sequencer-python",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/examples/sequencer-python/sequencer-example.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/build:${PYTHONPATH}",
+                "LD_LIBRARY_PATH": "${workspaceFolder}/build:${LD_LIBRARY_PATH}"
+            }
+        },
+        {
             "name": "Debug sequencer_sdl2_opengl3",
             "type": "cppdbg",
             "request": "launch",
@@ -12,6 +32,30 @@
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "Debug ImGuizmo example",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/ImGuizmo/example/example_sdl2_opengl3",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",

@@ -1,6 +1,6 @@
 #include <ImGuizmoC/ImSequencer.h>
 
-#include <imguizmo/ImSequencer.h>
+#include <ImSequencer.h>
 
 struct ImSequencerHandle_t: public ImSequencer::SequenceInterface
 {
@@ -8,13 +8,29 @@ struct ImSequencerHandle_t: public ImSequencer::SequenceInterface
             _params(params)
         {}
 
-        virtual int GetFrameMin() const { return _params.getFrameMin(_params.context, _params.contextSizeBytes); }
-        virtual int GetFrameMax() const { return _params.getFrameMax(_params.context, _params.contextSizeBytes); }
-        virtual int GetItemCount() const { return _params.getItemCount(_params.context, _params.contextSizeBytes); }
+        virtual int GetFrameMin() const 
+        { 
+            return _params.getFrameMin(_params.context, _params.contextSizeBytes); 
+        }
+        virtual int GetFrameMax() const 
+        { 
+            return _params.getFrameMax(_params.context, _params.contextSizeBytes);
+        }
+        virtual int GetItemCount() const 
+        { 
+            return _params.getItemCount(_params.context, _params.contextSizeBytes); 
+        }
         virtual void BeginEdit(int index) {}
         virtual void EndEdit() {}
-        virtual int GetItemTypeCount() const { return 0; }
-        virtual const char* GetItemTypeName(int /*typeIndex*/) const { return ""; }
+        virtual int GetItemTypeCount() const 
+        { 
+            return _params.getItemTypeCount(_params.context, _params.contextSizeBytes); 
+        }
+        virtual const char* GetItemTypeName(int typeIndex) const 
+        { 
+            return _params.getItemTypeName(_params.context, _params.contextSizeBytes,
+                typeIndex);
+        }
         virtual const char* GetItemLabel(int /*index*/) const { return ""; }
         virtual const char* GetCollapseFmt() const { return "%d Frames / %d entries"; }
         virtual void Get(int index, int** start, int** end, int* type, unsigned int* color) 
@@ -22,9 +38,9 @@ struct ImSequencerHandle_t: public ImSequencer::SequenceInterface
             _params.getSequence(_params.context, _params.contextSizeBytes,
                 index, start, end, type, color);            
         }
-        virtual void Add(int /*type*/) {}
-        virtual void Del(int /*index*/) {}
-        virtual void Duplicate(int /*index*/) {}
+        virtual void Add(int type) {}
+        virtual void Del(int index) {}
+        virtual void Duplicate(int index) {}
         virtual void Copy() {}
         virtual void Paste() {}
         virtual size_t GetCustomHeight(int /*index*/) { return 0; }

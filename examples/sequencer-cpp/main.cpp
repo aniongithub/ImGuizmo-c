@@ -110,7 +110,24 @@ int main(int argc, char** argv)
     ImSequencerParams params = {};
     params.getFrameMin = [](void* context, size_t contextSizeBytes) { return 0; };
     params.getFrameMax = [](void* context, size_t contextSizeBytes) { return 100; };
-    params.getItemCount = [](void* context, size_t contextSizeBytes) { return 1; };
+    params.getItemCount = [](void* context, size_t contextSizeBytes) { return 0; };
+    params.getSequence = [](void* context, size_t contextSizeBytes, int index, int** start, int** end, int* type, unsigned int* color)
+    {
+        // TODO: return sequences here...
+    };
+    params.getItemTypeCount = [](void* context, size_t contextSizeBytes) { return 2; };
+    params.getItemTypeName = [](void* context, size_t contextSizeBytes, int typeIndex) 
+    {
+        switch (typeIndex)
+        {
+            case 0:
+                return "Item type 1";
+            case 1:
+                return "Item type 2";
+            default:
+                return "";
+        }
+    };
 
     ImSequencerHandle sequencer;
     auto result = ImSequencer_createSequencer(params, &sequencer);
@@ -148,7 +165,7 @@ int main(int argc, char** argv)
         
         ImGui::Begin("Sequencer");
         ImSequencer_draw(sequencer, &currentFrame, &expanded, &selectedEntry, &firstFrame, 
-            ImSequencerOptions::IMSEQUENCER_EDIT_ALL);
+            (ImSequencerOptions)(ImSequencerOptions::IMSEQUENCER_EDIT_ALL | ImSequencerOptions::IMSEQUENCER_ADD | ImSequencerOptions::IMSEQUENCER_DEL));
         ImGui::End();
         
         ImGui::Render();

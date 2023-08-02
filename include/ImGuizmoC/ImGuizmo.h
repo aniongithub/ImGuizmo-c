@@ -13,6 +13,3 @@
 #else
   #define EXPORT_API
 #endif
-
-struct ImDrawList;
-struct ImRect;

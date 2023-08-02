@@ -20,7 +20,11 @@ RUN apt-get update &&\
         xorg-dev \
         apt-utils \
         dialog \
-        x11-apps
+        x11-apps \
+        python3-dev \
+        python3-pip
+
+RUN pip3 install numpy ctypesgen jq imgui[sdl2]
 
 WORKDIR /usr/local/src
 
@@ -33,10 +37,4 @@ RUN git clone https://github.com/aniongithub/imgui-cmake.git &&\
     git submodule update --init --recursive &&\
     mkdir build && cd build &&\
     cmake -DBUILD_SHARED_LIBS=ON -DIMGUI_GLLOADER=gl3w -DIMGUI_GLFW_IMPL=OFF -DBUILD_GLFW_OPENGL3_SAMPLE=OFF -DBUILD_SDL2_OPENGL3_SAMPLE=OFF .. &&\
-    make && make install
-
-RUN git clone https://github.com/aniongithub/ImGuizmo &&\
-    cd ImGuizmo &&\
-    mkdir build && cd build &&\
-    cmake -DBUILD_SHARED_LIBS=ON -DIMGUIZMO_BUILD_EXAMPLE=OFF .. &&\
     make && make install
